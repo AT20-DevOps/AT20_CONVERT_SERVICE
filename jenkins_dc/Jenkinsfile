@@ -1,16 +1,10 @@
 pipeline{
     agent any
     stages{
-        stage('Hello') {
-            steps{
-                sh 'echo Hello World'
-                sh 'echo Hello Class'
-                sh 'echo Hello Danii'
-            }
-        }
         stage("Test"){
+            agent{ docker '18-alpine3.16'}
             steps{
-                sh 'echo Here Testing command'
+                sh 'npm version'
             }
         }
     }
