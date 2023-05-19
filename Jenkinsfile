@@ -9,5 +9,10 @@ pipeline{
                 sh 'echo Hello Danii'
             }
         }
+        stage("Test"){
+            steps{
+                sh 'echo Here Testing command'
+            }
+        }
     }
 }
