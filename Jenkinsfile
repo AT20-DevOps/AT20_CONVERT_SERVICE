@@ -6,7 +6,7 @@ pipeline{
             steps{
                 sh 'echo Hello World'
                 sh 'echo Hello Class'
-                sh 'echo Hello Danii'
+                sh 'exit 1'
             }
         }
         stage("Test"){
