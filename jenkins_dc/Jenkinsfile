@@ -7,7 +7,8 @@ pipeline{
                 sh 'npm version'
                 sh 'ls -la'
                 sh 'npm install'
-                sh 'npm run test test/'
+                sh 'npm install --save-dev ts-jest'
+                sh 'npm run test'
             }
         }
     }
