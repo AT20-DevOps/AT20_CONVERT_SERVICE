@@ -1,10 +1,9 @@
 pipeline{
     agent any
-    stages{
+    stages {
         stage("Test"){
-            agent{ docker 'node:18-alpine3.16'}
-
-            steps{
+            agent { docker 'node:18-alpine3.16'}
+            steps {
                 sh 'npm version'
             }
         }
