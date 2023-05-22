@@ -10,7 +10,7 @@ pipeline{
                 sh 'npm install --save-dev ts-jest'
                 sh 'npm install --save-dev @types/jest'
                 sh 'npm install'
-                sh 'npm test'
+                sh 'npm run test'
             }
         }
     }
