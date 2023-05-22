@@ -37,7 +37,7 @@ export class AudioCommand extends Command {
     * @param {integer} newBitRate - This is the bit rate of the output file
     */
     set bitRate (newBitRate: string) {
-        if (newBitRate === undefined) {
+        if (newBitRate === '') {
             this._bitRate = '';
         } else {
             this._bitRate = `-b:a ${newBitRate}`;
@@ -49,7 +49,7 @@ export class AudioCommand extends Command {
     * @param {integer} duration - This is the duration of the output file in seconds
     */
     set duration (duration: number) {
-        if (typeof duration === 'undefined') {
+        if ( duration < 1) {
             this._duration = '';
         } else {
             this._duration = `-t ${duration}`;
