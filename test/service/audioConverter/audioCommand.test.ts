@@ -10,10 +10,10 @@
 * with Jalasoft
 */
 
-import dotenv from 'dotenv';
+//import dotenv from 'dotenv';
 import { AudioCommand } from '../../../src/service/audioConverter/audioCommand';
 import { Execute } from '../../../src/service/Execute';
-dotenv.config({ path: __dirname + '../../../../.env' });
+//dotenv.config({ path: __dirname + '../../../../.env' });
 
 describe ('This is the test suite for the Audio Converter service', () => {
     it ('Should return the command to execute', () => {
@@ -142,7 +142,7 @@ describe ('This is the test suite for the Audio Converter service', () => {
         // Gets the command to execute the desired action
         const command: string = audio.getCommand();
         // Converts the input file and returns the state of the conversion
-        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y -t 60 ./src/service/audioConverter/outputs/DigitalLove.mp3';
+        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y  -t 60 ./src/service/audioConverter/outputs/DigitalLove.mp3';
         expect(command).toBe(expectedCommand);
     });
     it ('Should return a valid command to execute, managing a zero value settled in duration', () => {
@@ -155,8 +155,6 @@ describe ('This is the test suite for the Audio Converter service', () => {
         audio.inputFile = `${process.env.UPLOADS_PATH_AUDIO}${newAudioFile}`;
         // Adds the extension of the wanted output file
         audio.outExtension = audioOutExtension;
-        // Adds command to convert the bit rate of the input file
-        audio.bitRate = '96k';
         // set duration to 60 seconds
         audio.duration = 0;
         // Creates the output path according to design
@@ -166,7 +164,7 @@ describe ('This is the test suite for the Audio Converter service', () => {
         // Gets the command to execute the desired action
         const command: string = audio.getCommand();
         // Converts the input file and returns the state of the conversion
-        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y ./src/service/audioConverter/outputs/DigitalLove.mp3';
+        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y   ./src/service/audioConverter/outputs/DigitalLove.mp3';
         expect(command).toBe(expectedCommand);
     });
     it ('Should return a valid command to execute, managing a negative value settled in duration', () => {
@@ -179,8 +177,6 @@ describe ('This is the test suite for the Audio Converter service', () => {
         audio.inputFile = `${process.env.UPLOADS_PATH_AUDIO}${newAudioFile}`;
         // Adds the extension of the wanted output file
         audio.outExtension = audioOutExtension;
-        // Adds command to convert the bit rate of the input file
-        audio.bitRate = '96k';
         // set duration to 60 seconds
         audio.duration = -45;
         // Creates the output path according to design
@@ -190,7 +186,7 @@ describe ('This is the test suite for the Audio Converter service', () => {
         // Gets the command to execute the desired action
         const command: string = audio.getCommand();
         // Converts the input file and returns the state of the conversion
-        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y ./src/service/audioConverter/outputs/DigitalLove.mp3';
+        const expectedCommand = 'ffmpeg -i ./src/service/audioConverter/inputs/DigitalLove.flac -y   ./src/service/audioConverter/outputs/DigitalLove.mp3';
         expect(command).toBe(expectedCommand);
     });
 });
