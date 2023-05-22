@@ -141,7 +141,7 @@ describe('This is the test suite for the image convert service', () => {
         image.convertedFilePath = imageOutFilePath;
         // Gets the command to execute the desired action
         var command: string = image.getCommand();
-        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg -type grayscale -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
+        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg  -type grayscale -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing negative values settled in width and height', () => {
@@ -166,7 +166,7 @@ describe('This is the test suite for the image convert service', () => {
         image.convertedFilePath = imageOutFilePath;
         // Gets the command to execute the desired action
         var command: string = image.getCommand();
-        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg -type grayscale -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
+        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg  -type grayscale -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing an empty value settled in typeOfOut', () => {
@@ -191,7 +191,7 @@ describe('This is the test suite for the image convert service', () => {
         image.convertedFilePath = imageOutFilePath;
         // Gets the command to execute the desired action
         var command: string = image.getCommand();
-        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
+        const expectedCommand = 'magick ./src/service/imageConverter/inputs/test.jpg   -rotate 90 ./src/service/imageConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
 });

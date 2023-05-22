@@ -39,7 +39,7 @@ export class pdfCommand extends Command {
      * @param densityValue Density - This is the value that represents the DPI of output images.
      */
     set density(densityValue: number) {
-        if (densityValue === undefined) {
+        if (densityValue <1) {
             this._density = '';
         } else {
             this._density = `-density ${densityValue}`;
@@ -51,7 +51,7 @@ export class pdfCommand extends Command {
      * @param qualityValue Quality - This is the value that specify the quality for the generated images.
      */
     set quality(qualityValue: number) {
-        if (qualityValue === undefined) {
+        if (qualityValue <1) {
             this._quality = '';
         } else {
             this._quality = `-quality ${qualityValue}`;
@@ -66,11 +66,19 @@ export class pdfCommand extends Command {
     * @param rangeHigh - The highest page number in the range.
     */
     newPageRange(rangeLow: number, rangeHigh: number): void {
+    if (rangeLow>1 &&rangeHigh>1) {
+
         if (rangeLow == rangeHigh) {
             this._pages = `[${rangeHigh}]`;
         } else {
             this._pages = `[${rangeLow}-${rangeHigh}]`;
         }
+
+    }
+    else {
+        this._pages = '';
+    }
+
     }
 
     /**

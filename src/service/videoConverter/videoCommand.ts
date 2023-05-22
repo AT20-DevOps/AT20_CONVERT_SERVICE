@@ -52,7 +52,7 @@ export class VideoCommand extends Command {
     * @param {integer} Width - This is the width of the output file
     */
     set width(Width: number) {
-        if (Width === undefined) {
+        if (Width < 1) {
             this._width = '';
         } else {
             this._width = `-s ${Width}x`;
@@ -64,7 +64,7 @@ export class VideoCommand extends Command {
     * @param {integer} Heigth - This is the heigth of the output file
     */
     set height(Height: number) {
-        if (Height === undefined) {
+        if (Height < 1) {
             this._height = '';
         } else {
             this._height = `${Height}`;
@@ -76,7 +76,7 @@ export class VideoCommand extends Command {
     * @param {string} ratio This is the new ratio of the output file
     */
     set aspectRatio(ratio: string) {
-        if (ratio === undefined) {
+        if (ratio === '') {
             this._aspectRatio = '';
         } else {
             this._aspectRatio = `-aspect ${ratio}`;
@@ -88,7 +88,7 @@ export class VideoCommand extends Command {
      * @param {integer} duration - The duration of the input video to be converted
      */
     set duration(duration: number) {
-        if (duration === undefined) {
+        if (duration < 1) {
             this._duration = '';
         } else {
             this._duration = `-t ${duration}`;
@@ -100,7 +100,7 @@ export class VideoCommand extends Command {
     * @param {string} framerate This is the new framerate of the output file
     */
     set framerate(framerate: number) {
-        if (framerate === undefined) {
+        if (framerate < 1) {
             this._framerate = '';
         } else {
             this._framerate = `-r ${framerate}`;
@@ -112,7 +112,7 @@ export class VideoCommand extends Command {
     * @param {string} bitrate This is the new bitrate of the output file
     */
     set bitrate(bitrate: string) {
-        if (bitrate === undefined) {
+        if (bitrate == '') {
             this._bitrate = '';
         } else {
             this._bitrate = `-b:v ${bitrate}`;
@@ -124,7 +124,7 @@ export class VideoCommand extends Command {
     * @param {string} autoCodec This is the new autoCodec of the output file
     */
     set autoCodec(autoCodec: string) {
-        if (autoCodec === undefined) {
+        if (autoCodec === '') {
             this._autoCodec = '';
         } else {
             this._autoCodec = `-c:v ${autoCodec}`;

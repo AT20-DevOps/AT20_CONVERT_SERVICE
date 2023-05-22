@@ -42,7 +42,7 @@ export class ImageCommand extends Command {
     * @param {integer} width - This is the width that the new image will have
     */
     set width (width: number) {
-        if (typeof width !== 'number') {
+        if ( width < 1) {
             this._width = '';
         } else {
             this._width = `-resize ${width}x`;
@@ -54,7 +54,7 @@ export class ImageCommand extends Command {
     * @param {integer} Height - This is the height that the new image will have
     */
     set height (height: number) {
-        if (typeof height !== 'number') {
+        if (height < 1) {
             this._height = '';
         } else {
             this._height = `${height}`;
@@ -66,7 +66,7 @@ export class ImageCommand extends Command {
     * @param {string} type This is the type that the new image will have
     */
     set typeOfOutput (type: string) {
-        if (typeof type !== 'string') {
+        if ( type == '') {
             this._typeOfOutput = '';
         } else {
             this._typeOfOutput = `-type ${type}`;

@@ -34,11 +34,9 @@ describe('This is the test suite for the pdf convert service', () => {
         // Creates the output path for the converted file.
         const outFilePath = `${process.env.DOWNLOAD_PATH_PDF}${newFileName}.${outExtension}`;
         pdf.convertedFilePath = outFilePath;
-        // Sets the page range to convert.
-        pdf.newPageRange(0, 0);
         // Gets the command to execute the desired action.
         const command: string = pdf.getCommand();
-        const expectedCommand = 'magick -density 150 ./src/service/pdfConverter/inputs/test.pdf[0] -quality 90 ./src/service/pdfConverter/outputs/test.jpg';
+        const expectedCommand = 'magick -density 150 ./src/service/pdfConverter/inputs/test.pdf -quality 90 ./src/service/pdfConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
 
@@ -144,7 +142,7 @@ describe('This is the test suite for the pdf convert service', () => {
         pdf.newPageRange(0, 0);
         // Gets the command to execute the desired action.
         const command: string = pdf.getCommand();
-        const expectedCommand = 'magick ./src/service/pdfConverter/inputs/test.pdf[0] ./src/service/pdfConverter/outputs/test.jpg';
+        const expectedCommand = 'magick  ./src/service/pdfConverter/inputs/test.pdf  ./src/service/pdfConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing negative values settled in density and quality', () => {
@@ -165,11 +163,9 @@ describe('This is the test suite for the pdf convert service', () => {
         // Creates the output path for the converted file.
         const outFilePath = `${process.env.DOWNLOAD_PATH_PDF}${newFileName}.${outExtension}`;
         pdf.convertedFilePath = outFilePath;
-        // Sets the page range to convert.
-        pdf.newPageRange(0, 0);
         // Gets the command to execute the desired action.
         const command: string = pdf.getCommand();
-        const expectedCommand = 'magick ./src/service/pdfConverter/inputs/test.pdf[0] ./src/service/pdfConverter/outputs/test.jpg';
+        const expectedCommand = 'magick  ./src/service/pdfConverter/inputs/test.pdf  ./src/service/pdfConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing negative values in range', () => {
@@ -184,9 +180,6 @@ describe('This is the test suite for the pdf convert service', () => {
         pdf.inputFile = `${process.env.UPLOADS_PATH_PDF}${newFile}`;
         // Adds the extension of the images output files
         pdf.outExtension = outExtension;
-        // Sets the density and quality of the output images.
-        pdf.density = 150;
-        pdf.quality = 90;
         // Creates the output path for the converted file.
         const outFilePath = `${process.env.DOWNLOAD_PATH_PDF}${newFileName}.${outExtension}`;
         pdf.convertedFilePath = outFilePath;
@@ -194,7 +187,7 @@ describe('This is the test suite for the pdf convert service', () => {
         pdf.newPageRange(-1, -2);
         // Gets the command to execute the desired action.
         const command: string = pdf.getCommand();
-        const expectedCommand = 'magick ./src/service/pdfConverter/inputs/test.pdf[1-2] ./src/service/pdfConverter/outputs/test.jpg';
+        const expectedCommand = 'magick  ./src/service/pdfConverter/inputs/test.pdf  ./src/service/pdfConverter/outputs/test.jpg';
         expect(command).toBe(expectedCommand);
     });
 });

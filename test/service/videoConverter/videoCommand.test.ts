@@ -9,7 +9,7 @@
 * accordance with the terms of the license agreement you entered into
 * with Jalasoft
 */
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 import { VideoCommand } from '../../../src/service/videoConverter/videoCommand';
 import { Execute } from '../../../src/service/Execute';
 
@@ -169,7 +169,7 @@ describe('This is the test suite for the pdf convert service', () => {
         video.convertedFilePath = videoOutFilePath;
         // Gets the command to execute the desired action
         const command = video.getCommand();
-        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4 -aspect 4:3 -t 60 -r 30 -b:v 1000k -c:v libx264 ./src/service/videoConverter/outputs/maxwell.mp4';
+        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4  -aspect 4:3 -t 60 -r 30 -b:v 1000k -c:v libx264 ./src/service/videoConverter/outputs/maxwell.mp4';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing negative values settled in width and height', () => {
@@ -201,7 +201,7 @@ describe('This is the test suite for the pdf convert service', () => {
         video.convertedFilePath = videoOutFilePath;
         // Gets the command to execute the desired action
         const command = video.getCommand();
-        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4 -aspect 4:3 -t 60 -r 30 -b:v 1000k -c:v libx264 ./src/service/videoConverter/outputs/maxwell.mp4';
+        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4  -aspect 4:3 -t 60 -r 30 -b:v 1000k -c:v libx264 ./src/service/videoConverter/outputs/maxwell.mp4';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing empty values settled in aspectRatio, bitrate and autoCodec', () => {
@@ -230,7 +230,7 @@ describe('This is the test suite for the pdf convert service', () => {
         video.convertedFilePath = videoOutFilePath;
         // Gets the command to execute the desired action
         const command = video.getCommand();
-        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4 -t 60 -r 30 ./src/service/videoConverter/outputs/maxwell.mp4';
+        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4   -t 60 -r 30   ./src/service/videoConverter/outputs/maxwell.mp4';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing zero values settled in duration and framerate', () => {
@@ -253,7 +253,7 @@ describe('This is the test suite for the pdf convert service', () => {
         video.convertedFilePath = videoOutFilePath;
         // Gets the command to execute the desired action
         const command = video.getCommand();
-        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4 ./src/service/videoConverter/outputs/maxwell.mp4';
+        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4       ./src/service/videoConverter/outputs/maxwell.mp4';
         expect(command).toBe(expectedCommand);
     });
     it('Should return a valid command to execute, managing negative values settled in duration and framerate', () => {
@@ -276,7 +276,7 @@ describe('This is the test suite for the pdf convert service', () => {
         video.convertedFilePath = videoOutFilePath;
         // Gets the command to execute the desired action
         const command = video.getCommand();
-        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4 ./src/service/videoConverter/outputs/maxwell.mp4';
+        const expectedCommand = 'ffmpeg -i ./src/service/videoConverter/inputs/maxwell.mp4       ./src/service/videoConverter/outputs/maxwell.mp4';
         expect(command).toBe(expectedCommand);
     });
 });
