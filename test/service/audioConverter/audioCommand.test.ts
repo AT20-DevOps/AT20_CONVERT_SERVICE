@@ -10,10 +10,10 @@
 * with Jalasoft
 */
 
-//import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 import { AudioCommand } from '../../../src/service/audioConverter/audioCommand';
 import { Execute } from '../../../src/service/Execute';
-//dotenv.config({ path: __dirname + '../../../../.env' });
+dotenv.config();
 
 describe ('This is the test suite for the Audio Converter service', () => {
     it ('Should return the command to execute', () => {
