@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --fix",
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "npx ts-node index.ts"
   },
   "author": "",
