@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 import { ImageCommand } from '../../../src/service/imageConverter/imageCommand';
 import { Execute } from '../../../src/service/Execute';
 
-dotenv.config({ path: __dirname + '../../../../.env'});
+dotenv.config();
 
 describe('This is the test suite for the image convert service', () => {
     it('Should return the command to be executed according to the requirements previously inserted', () => {

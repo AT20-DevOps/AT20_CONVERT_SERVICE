@@ -9,11 +9,11 @@
 * accordance with the terms of the license agreement you entered into
 * with Jalasoft
 */
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 import { pdfCommand } from '../../../src/service/pdfConverter/pdfCommand';
 import { Execute } from '../../../src/service/Execute';
 
-dotenv.config({ path: __dirname + '../../../../.env'});
+dotenv.config();
 
 describe('This is the test suite for the pdf convert service', () => {
     it('Should return the command to be executed according to the requirements previously inserted', () => {
