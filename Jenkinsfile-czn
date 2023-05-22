@@ -8,7 +8,7 @@ pipeline{
                 //sh 'npm version'
                 //sh 'ls -la'
                 sh 'npm install --save-dev ts-jest'
-                sh 'npm -i --save-dev @types/jest'
+                sh 'npm install --save-dev @types/jest'
                 sh 'npm run test'
             }
         }
