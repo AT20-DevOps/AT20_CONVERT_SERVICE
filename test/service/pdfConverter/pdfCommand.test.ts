@@ -11,7 +11,7 @@
 */
 const dotenv = require('dotenv');
 import { pdfCommand } from '../../../src/service/pdfConverter/pdfCommand';
-import { Execute } from '../../../src/service/Execute';
+//import { Execute } from '../../../src/service/Execute';
 
 dotenv.config();
 

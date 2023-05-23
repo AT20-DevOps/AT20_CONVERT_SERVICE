@@ -11,7 +11,7 @@
 */
 import dotenv from 'dotenv';
 import { VideoCommand } from '../../../src/service/videoConverter/videoCommand';
-import { Execute } from '../../../src/service/Execute';
+//import { Execute } from '../../../src/service/Execute';
 
 dotenv.config();
 
