@@ -12,7 +12,7 @@
 
 import dotenv from 'dotenv';
 import { Execute } from '../../src/service/Execute';
-dotenv.config({ path: __dirname + '../../../../.env' });
+dotenv.config();
 
 describe ('This is the test suite for the Excecute class', () => {
     it('Should execute the command and return a message for a successful convertion', async () => {
