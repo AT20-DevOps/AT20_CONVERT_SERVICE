@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    environment {
+        DOCKER_PASS = credentials('docker_pass')
+    }
     stages {
         stage("Test"){
             agent { docker 'node:18-alpine3.16'}
@@ -13,6 +16,18 @@ pipeline{
                     archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
                 }
             }
+        }
+        stage('Package'){
+            steps{
+                sh'docker build -t AT20_CONVERT_SERVICE .'
+            }
+        }
+        stage('Publish'){
+            steps{
+                sh 'docker tag AT20_CONVERT_SERVICE daniish77/at20_convert_service'
+                sh 'docker push daniish77/at20_convert_service'
+            }
+
         }
     }
 }
