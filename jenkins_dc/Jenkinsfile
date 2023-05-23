@@ -13,7 +13,7 @@ pipeline{
             }
             post{
                 always{
-                    archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
+                    archiveArtifacts artifacts: 'test/report/', followSymlinks: false
                 }
             }
         }
