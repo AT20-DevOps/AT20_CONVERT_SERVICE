@@ -24,6 +24,7 @@ pipeline{
         }
         stage('Publish'){
             steps{
+                sh 'docker login -u daniish77 -p ${DOCKER_PASS}'
                 sh 'docker tag AT20_CONVERT_SERVICE daniish77/at20_convert_service'
                 sh 'docker push daniish77/at20_convert_service'
             }
