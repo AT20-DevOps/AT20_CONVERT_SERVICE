@@ -13,19 +13,19 @@ pipeline{
             }
             post{
                 always{
-                    archiveArtifacts artifacts: 'test/report/', followSymlinks: false
+                    archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
                 }
             }
         }
         stage('Package'){
             steps{
-                sh'docker build -t AT20_CONVERT_SERVICE .'
+                sh'docker build -t at20_convert_service .'
             }
         }
         stage('Publish'){
             steps{
                 sh 'docker login -u daniish77 -p ${DOCKER_PASS}'
-                sh 'docker tag AT20_CONVERT_SERVICE daniish77/at20_convert_service'
+                sh 'docker tag at20_convert_service daniish77/at20_convert_service'
                 sh 'docker push daniish77/at20_convert_service'
             }
 
