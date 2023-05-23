@@ -11,7 +11,7 @@
 */
 import dotenv from 'dotenv';
 import { ImageCommand } from '../../../src/service/imageConverter/imageCommand';
-import { Execute } from '../../../src/service/Execute';
+//import { Execute } from '../../../src/service/Execute';
 
 dotenv.config();
 
