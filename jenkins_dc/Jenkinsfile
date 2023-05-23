@@ -6,7 +6,6 @@ pipeline{
             steps {
                 sh 'npm install'
                 sh 'npm i --save-dev @types/jest'
-                sh 'apk add --update ffmpeg'
                 sh 'npm run test'
             }
             post{
