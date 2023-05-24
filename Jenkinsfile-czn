@@ -13,9 +13,17 @@ pipeline{
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'test/report/', followSymlinks: false
+                    archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
                 }
             }
+        }
+        stage ('Package'){
+            docker build -t ato20_convert_service .
+        }
+        stage ('Publish'){
+            //docker login
+            //docker tag
+            //docker push
         }
     }
 }
