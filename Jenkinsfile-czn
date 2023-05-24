@@ -1,6 +1,9 @@
 
 pipeline{
     agent any
+    environment {
+        DOCKER_PASS =  credentials('docker_pass')
+    }
     stages{
         stage("Test"){
             agent { docker 'node:18-alpine3.16' }
@@ -24,7 +27,7 @@ pipeline{
         }
         stage ('Publish'){
             steps {
-                //docker login
+                sh 'docker login -u carolina01 -p ${DOCKER_PASS}'
                 sh 'echo docker tag at20_convert_service carolina01/at20_convert_service'
                 sh 'echo docker push carolina01/at20_convert_service'
             }
