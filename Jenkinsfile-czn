@@ -19,13 +19,13 @@ pipeline{
         }
         stage ('Package'){
             steps {
-                sh 'docker build -t ato20_convert_service .'
+                sh 'docker build -t at20_convert_service .'
             }
         }
         stage ('Publish'){
             steps {
                 //docker login
-                sh 'echo docker tag ato20_convert_service carolina01/at20_convert_service'
+                sh 'echo docker tag at20_convert_service carolina01/at20_convert_service'
                 sh 'echo docker push carolina01/at20_convert_service'
             }
         }
