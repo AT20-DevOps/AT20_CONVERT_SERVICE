@@ -3,6 +3,7 @@ pipeline{
     agent any
     environment {
         DOCKER_PASS =  credentials('docker_pass')
+        SONAR_TOKEN =  credentials('sonar_token')
     }
     stages{
         stage("Test"){
@@ -18,6 +19,11 @@ pipeline{
                 always {
                     archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
                 }
+            }
+        }
+        stage ('CodeInspection') {
+            steps {
+                sh 'sonar-scanner   -Dsonar.organization=at20-cz   -Dsonar.projectKey=at20-cz   -Dsonar.sources=.   -Dsonar.host.url=https://sonarcloud.io'
             }
         }
         stage ('Package'){
