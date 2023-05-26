@@ -9,9 +9,6 @@ pipeline{
         stage("Test"){
             agent { docker 'node:18-alpine3.16' }
             steps{
-                sh 'apk add --no-cache curl unzip' // for downloading and extracting sonar-scanner
-                sh 'curl -Lo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
-                sh 'unzip sonar-scanner.zip && rm sonar-scanner.zip'
                 sh 'npm install --save-dev ts-jest'
                 sh 'npm install --save-dev @types/jest'
                 sh 'npx jest'
