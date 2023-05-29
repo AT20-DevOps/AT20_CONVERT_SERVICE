@@ -57,5 +57,15 @@ pipeline{
             }
 
         }
+        stage('DeployToDev'){
+            steps{
+                sh 'docker compose -f docker-compose.dc.yaml up -d'
+            }
+        }
+    }
+    post{
+        always{
+            sh 'echo clean dangling images'
+        }
     }
 }
