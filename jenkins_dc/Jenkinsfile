@@ -5,45 +5,45 @@ pipeline{
         SONAR_TOKEN = credentials('sonar_token')
     }
     stages {
-        // stage("Test"){
-        //     agent { docker 'node:18-alpine3.16'}
-        //     steps {
-        //         sh 'npm install'
-        //         sh 'npm i --save-dev @types/jest'
-        //         sh 'npm run test'
-        //     }
-        //     post{
-        //         always{
-        //             archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
-        //         }
-        //     }
-        // }
-        // stage('CodeInspection'){
-        //     agent{
-        //         docker 'sonarsource/sonar-scanner-cli'
-        //     }
-        //     steps{
-        //         withSonarQubeEnv('sonar_scanner'){
-        //             sh 'sonar-scanner \
-        //                 -Dsonar.organization=at20-dc \
-        //                 -Dsonar.projectKey=convert-service-dc \
-        //                 -Dsonar.sources=. \
-        //                 -Dsonar.host.url=https://sonarcloud.io'
-        //         }
-        //     }
-        // }
-        // stage('Quality gate'){
-        //     steps{
-        //         timeout(time: 3, unit: 'MINUTES') {
-        //             script{
-        //                 def qg = waitForQualityGate()
-        //                 if (qg.status != 'OK') {
-        //                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage("Test"){
+            agent { docker 'node:18-alpine3.16'}
+            steps {
+                sh 'npm install'
+                sh 'npm i --save-dev @types/jest'
+                sh 'npm run test'
+            }
+            post{
+                always{
+                    archiveArtifacts artifacts: 'test/report/report.html', followSymlinks: false
+                }
+            }
+        }
+        stage('CodeInspection'){
+            agent{
+                docker 'sonarsource/sonar-scanner-cli'
+            }
+            steps{
+                withSonarQubeEnv('sonar_scanner'){
+                    sh 'sonar-scanner \
+                        -Dsonar.organization=at20-dc \
+                        -Dsonar.projectKey=convert-service-dc \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarcloud.io'
+                }
+            }
+        }
+        stage('Quality gate'){
+            steps{
+                timeout(time: 3, unit: 'MINUTES') {
+                    script{
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
         stage('Package'){
             steps{
                 sh'docker build -t at20_convert_service .'
@@ -67,6 +67,7 @@ pipeline{
     post{
         always{
             sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker system prune -a'
         }
     }
 }
