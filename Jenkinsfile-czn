@@ -21,7 +21,7 @@ pipeline{
         }
         stage ('CodeInspection') {
             agent {
-                docker 'sonarsource/sonar-scanner-cli'
+                docker 'sonarsource/sonar-scanner'
             }
             steps {
                 withSonarQubeEnv('sonar_scanner') {
