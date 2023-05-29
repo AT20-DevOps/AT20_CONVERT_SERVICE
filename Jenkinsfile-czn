@@ -54,5 +54,11 @@ pipeline{
                 sh 'docker push carolina01/at20_convert_service'
             }
         }
+        stage ('DeployToDev') {
+            steps {
+                //sh 'docker compose up -d'
+
+            }
+        }
     }
 }
