@@ -59,7 +59,8 @@ pipeline{
         }
         stage('DeployToDev'){
             steps{
-                sh 'docker compose -f docker-compose.dc.yml up -d'
+                sh 'docker-compose -f docker-compose.dc.yml up -d'
+                sh 'echo command to run smoke test'
             }
         }
     }
