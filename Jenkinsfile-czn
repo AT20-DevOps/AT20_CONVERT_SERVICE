@@ -60,11 +60,11 @@ pipeline{
                 sh 'echo command to run smoke test'
             }
         }
-        post{
-            always {
-                sh 'docker rmi $(docker images -f "dangling=true" -q)'
-                sh 'docker system prune -a'
-            }
+    }
+    post{
+        always {
+            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker system prune -a'
         }
     }
 }
