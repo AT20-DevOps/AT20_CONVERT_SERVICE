@@ -20,12 +20,9 @@ pipeline{
             }
         }
         stage ('CodeInspection') {
-            agent {
-                docker 'sonarsource/sonar-scanner'
-            }
             steps {
                 withSonarQubeEnv('sonar_scanner') {
-                    sh 'sonar-scanner \
+                    sh '~/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
                     -Dsonar.organization=at20-czn \
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
@@ -35,7 +32,7 @@ pipeline{
         }
         stage("Quality gate") {
             steps {
-                timeout(time: 10, unit: 'MINUTES') {
+                timeout(time: 5, unit: 'MINUTES') {
                     script {
                         def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
