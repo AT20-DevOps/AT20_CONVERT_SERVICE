@@ -59,13 +59,13 @@ pipeline{
         }
         stage('DeployToDev'){
             steps{
-                sh 'docker-compose -f docker-compose.dc.yaml up -d'
+                sh 'docker compose -f docker-compose.dc.yml up -d'
             }
         }
     }
     post{
         always{
-            sh 'echo clean dangling images'
+            sh 'docker rmi $(docker images -f "dangling=true" -q)'
         }
     }
 }
