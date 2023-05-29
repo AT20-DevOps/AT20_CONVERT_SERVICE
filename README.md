@@ -54,3 +54,6 @@ npm run dev => start the project in ts through index.ts
 npm run tsc => command to go from ts to js
 npm start => to pull up the js from the build/index.js folder
 
+### To start th service using docker compose locally
+docker-compose -f docker-compose.dc.yaml up -d
+
