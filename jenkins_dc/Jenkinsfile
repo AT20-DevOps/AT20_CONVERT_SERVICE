@@ -57,5 +57,22 @@ pipeline{
             }
 
         }
+        stage('DeployToDev'){
+            steps{
+                sh 'docker-compose -f docker-compose.dc.yaml up -d'
+                sh 'echo command to run smoke test'
+            }
+        }
+        stage('DeployToAuto') {
+            steps {
+                sh 'DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose.dc.yaml up -d'
+            }
+        }
+    }
+    post{
+        always{
+            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker system prune -a'
+        }
     }
 }
