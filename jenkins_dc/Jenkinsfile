@@ -62,7 +62,7 @@ pipeline{
         }
         stage('DeployToDev'){
             steps{
-                sh 'docker-compose -e TAG_VERSION=:${TAG_VERSION} up -d'
+                sh 'docker-compose -e TAG_VERSION=:${TAG_VERSION} -f docker-compose.dc.yaml up -d'
                 sh 'echo command to run smoke test'
             }
         }
@@ -75,7 +75,7 @@ pipeline{
     }
     post{
         always{
-            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            //sh 'docker rmi $(docker images -f "dangling=true" -q)'
             sh 'docker system prune -a'
         }
     }
