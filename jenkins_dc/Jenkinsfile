@@ -76,7 +76,7 @@ pipeline{
     }
     post{
         always{
-            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker image prune -f --filter "dangling=true" -q)'
             sh 'docker system prune -a'
         }
     }
