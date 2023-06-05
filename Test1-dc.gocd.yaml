@@ -6,11 +6,13 @@ pipelines:
     lock_behavior: none
     display_order: -1
     materials:
-      git-550ef0e:
+      git-3bef966:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
+        username: daniish77
         shallow_clone: false
         auto_update: true
-        branch: master
+        branch: task9-dc
+        encrypted_password: AES:L0A67qe/6sGlax8rPQJcJQ==:WGhnuvjwdkNCIcjOUtJ+XA==
     stages:
     - Test:
         fetch_materials: true
