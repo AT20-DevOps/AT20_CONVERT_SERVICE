@@ -31,6 +31,14 @@ pipelines:
                 npm install
                 npm i --save-dev @types/jest
                 npm run test
+                npm fund
+            artifacts :
+            - test:
+                source: build/reports/tests/test.index.xml
+                destination: xml_report
+            - build:
+                source: build/reports/tests/test.index.html
+                destination: html_report
     - code-inspection:
         fetch_materials: true
         keep_artifacts: false
