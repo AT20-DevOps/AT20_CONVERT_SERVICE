@@ -29,7 +29,6 @@ pipelines:
             tasks:
             - script : |
                 npm install
-                npm i --save-dev @types/jest
                 npm run test
             artifacts :
             - build:
