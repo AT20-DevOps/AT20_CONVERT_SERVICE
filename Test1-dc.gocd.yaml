@@ -30,7 +30,7 @@ pipelines:
             - script : |
                 npm install
                 npm i --save-dev @types/jest
-                npm run test/
+                npm run test
             artifacts :
             - test:
                 source: test/report/report.js
