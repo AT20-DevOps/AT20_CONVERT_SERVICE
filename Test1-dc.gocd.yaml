@@ -27,11 +27,10 @@ pipelines:
             resources :
             - ubuntu
             tasks:
-            - script :
+            - script : |
                 npm install
                 npm i --save-dev @types/jest
-                npm run test
-                npm fund
+                npm run test/
             artifacts :
             - test:
                 source: test/report/report.js
