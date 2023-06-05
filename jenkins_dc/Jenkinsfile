@@ -3,6 +3,9 @@ pipeline{
     environment {
         DOCKER_PASS = credentials('docker_pass')
         SONAR_TOKEN = credentials('sonar_token')
+        TARGET_HOST = '192.168.56.62'
+        GIT_COMMIT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
+        //GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
     }
     stages {
         stage("Test"){
@@ -51,27 +54,29 @@ pipeline{
         }
         stage('Publish'){
             steps{
+                //sh 'export TAG=$(git log --pretty=format:'%h' -n 1)'
                 sh 'docker login -u daniish77 -p ${DOCKER_PASS}'
-                sh 'docker tag at20_convert_service daniish77/at20_convert_service'
-                sh 'docker push daniish77/at20_convert_service'
+                sh 'docker tag at20_convert_service daniish77/at20_convert_service:${GIT_COMMIT_HASH}'
+                sh 'docker push daniish77/at20_convert_service:${GIT_COMMIT_HASH}'
             }
 
         }
         stage('DeployToDev'){
             steps{
-                sh 'docker-compose -f docker-compose.dc.yaml up -d'
+                sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose.dc.yaml up -d'
                 sh 'echo command to run smoke test'
             }
         }
         stage('DeployToAuto') {
             steps {
-                sh 'DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose.dc.yaml up -d'
+                sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose.dc.yaml up -d'
+                sh 'echo command to run automation tests'
             }
         }
     }
     post{
         always{
-            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker image prune -f --filter "dangling=true"'
             sh 'docker system prune -a'
         }
     }
