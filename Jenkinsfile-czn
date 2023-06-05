@@ -23,7 +23,7 @@ pipeline{
         stage ('CodeInspection') {
             steps {
                 withSonarQubeEnv('sonar_scanner') {
-                    sh '~/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+                    sh 'sonar-scanner \
                     -Dsonar.organization=at20-czn \
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
