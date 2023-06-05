@@ -11,7 +11,7 @@ pipelines:
         username: daniish77
         shallow_clone: false
         auto_update: true
-        branch: task9-dc
+        branch: task10-dc
         encrypted_password: AES:L0A67qe/6sGlax8rPQJcJQ==:WGhnuvjwdkNCIcjOUtJ+XA==
     stages:
     - Test:
@@ -24,21 +24,13 @@ pipelines:
         jobs:
           unit-test:
             timeout: 0
+            resources :
+            - ubuntu
             tasks:
-            - exec:
-                arguments:
-                - Hello
-                - World
-                command: echo
-                run_if: passed
-          code_coverage:
-            timeout: 0
-            tasks:
-            - exec:
-                arguments:
-                - -la
-                command: ls
-                run_if: passed
+            - script :
+                npm install
+                npm i --save-dev @types/jest
+                npm run test
     - code-inspection:
         fetch_materials: true
         keep_artifacts: false
