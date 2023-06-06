@@ -1,18 +1,18 @@
 format_version: 10
 pipelines:
-  Test1:
-    group: AT20Group
+  Test-czn:
+    group: AT20GRoup
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
     materials:
-      git-de0399b:
+      git-f50c0a9:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: develop
-        encrypted_password: AES:g/Aui+2ebsjJ1bdk69wnfw==:R8HiPCv1AFMBfHsGDbDyuA==
+        branch: task-9-czn
+        encrypted_password: AES:xB7aXpVu088/NoEcQtBmzg==:JwYqidsUp0md571suHThBA==
     stages:
     - Test:
         fetch_materials: true
@@ -28,7 +28,7 @@ pipelines:
             - exec:
                 arguments:
                 - hello
-                - world
+                - word
                 command: echo
                 run_if: passed
           code_coverage:
@@ -52,6 +52,6 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - sonar-scanner command help
+                - sonar-scanner command here
                 command: echo
                 run_if: passed
