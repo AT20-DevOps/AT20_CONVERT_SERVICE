@@ -9,7 +9,7 @@ pipelines:
       GIT_COMMIT_HASH: 1.2
     secure_variables:
       SONAR_TOKEN: AES:00iT9Y9WE01ib5E6v22BNg==:MnQZwXtWPkyM42QbIpZlL1BPlVXEzhzNTTqvu9Dr0XrMn529qgMj4Yq5cb+dTRrK
-      DOCKER_PASS: AES:DKno0ZKyMLbK42PVqz3vQw==:wHdzKXg5j+LhcZgl3EhrcA==
+      DOCKER_PASS: AES:ijx5mmkqGQ57G743cvpZbg==:zUbMyS91grlIM3JJm9bEag==
     materials:
       git-3bef966:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
