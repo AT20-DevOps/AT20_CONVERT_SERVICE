@@ -32,8 +32,24 @@ pipelines:
                 npm run test
             artifacts :
             - build:
-                source: AT20_CONVERT_SERVICE/test/report/report.html
+                source: test/report/report.html
                 destination: html_report
+    - code-inspection:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          sonar:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - sonar-scanner command
+                command: echo
+                run_if: passed
 
 
 
