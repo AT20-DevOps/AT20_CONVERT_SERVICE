@@ -57,7 +57,7 @@ pipelines:
             tasks:
             - script: |
                 ls -la
-                /godata/.sonar/sonar-scanner-4.7.02747-linux/bin/sonar-scanner \
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
                     -Dsonar.organization=at20-dc \
                     -Dsonar.projectKey=convert-service-dc \
                     -Dsonar.sources=. \
