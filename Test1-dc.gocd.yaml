@@ -15,7 +15,7 @@ pipelines:
         username: daniish77
         shallow_clone: false
         auto_update: true
-        branch: task10-dc
+        branch: task11-dc
         encrypted_password: AES:L0A67qe/6sGlax8rPQJcJQ==:WGhnuvjwdkNCIcjOUtJ+XA==
     stages:
     - Test:
