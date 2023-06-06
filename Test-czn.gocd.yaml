@@ -11,7 +11,7 @@ pipelines:
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task10-czn
+        branch: task-9-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
@@ -28,8 +28,9 @@ pipelines:
             - ubuntu
             tasks:
             - script: |
-                npm install
-                npm run test
+                npm install --save-dev ts-jest
+                npm install --save-dev @types/jest
+                npx jest
             artifacts:
             - build:
                 source: test/report/report.html
