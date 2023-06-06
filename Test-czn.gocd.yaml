@@ -1,18 +1,18 @@
 format_version: 10
 pipelines:
   Test-czn:
-    group: AT20GRoup
+    group: AT20-czn
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
     materials:
-      git-f50c0a9:
+      git-dbfb6af:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task-9-czn
-        encrypted_password: AES:xB7aXpVu088/NoEcQtBmzg==:JwYqidsUp0md571suHThBA==
+        branch: develop
+        encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
         fetch_materials: true
