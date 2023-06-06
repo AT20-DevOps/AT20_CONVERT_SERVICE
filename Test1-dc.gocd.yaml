@@ -32,6 +32,9 @@ pipelines:
                 npm i --save-dev @types/jest
                 npm run test
             artifacts :
+            - test:
+                source: test/report/*.xml
+                destination: xml_report
             - build:
                 source: test/report/report.html
                 destination: html_report
