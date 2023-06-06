@@ -11,7 +11,7 @@ pipelines:
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: develop
+        branch: task10-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
@@ -24,21 +24,16 @@ pipelines:
         jobs:
           unit-test:
             timeout: 0
+            resources :
+            - ubuntu
             tasks:
-            - exec:
-                arguments:
-                - hello
-                - word
-                command: echo
-                run_if: passed
-          code_coverage:
-            timeout: 0
-            tasks:
-            - exec:
-                arguments:
-                - -la
-                command: ls
-                run_if: passed
+            - script: |
+                npm install
+                npm run test
+            artifacts:
+            - build:
+                source: test/report/report.html
+                destination: html_report
     - code_inspection:
         fetch_materials: true
         keep_artifacts: false
