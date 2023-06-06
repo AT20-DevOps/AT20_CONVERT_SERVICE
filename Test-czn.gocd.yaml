@@ -1,0 +1,53 @@
+format_version: 10
+pipelines:
+  Test-czn:
+    group: AT20-czn
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-dbfb6af:
+        git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
+        username: carolinazegarra01
+        shallow_clone: false
+        auto_update: true
+        branch: task10-czn
+        encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
+    stages:
+    - Test:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          unit-test:
+            timeout: 0
+            resources :
+            - ubuntu
+            tasks:
+            - script: |
+                npm install --save-dev ts-jest
+                npm install --save-dev @types/jest
+                npx jest
+            artifacts:
+            - build:
+                source: test/report/report.html
+                destination: html_report
+    - code_inspection:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          sonar:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - sonar-scanner command here
+                command: echo
+                run_if: passed

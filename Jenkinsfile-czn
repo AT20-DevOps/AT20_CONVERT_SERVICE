@@ -5,6 +5,7 @@ pipeline{
         DOCKER_PASS =  credentials('docker_pass')
         SONAR_TOKEN =  credentials('sonar_token')
         TARGET_HOST = '192.168.56.61'
+        GIT_COMMIT_HASH = sh (script:"git rev-parse --short HEAD", returnStdout: true).trim()
     }
     stages{
         stage("Test"){
@@ -53,28 +54,30 @@ pipeline{
         }
         stage ('Publish'){
             steps {
+                //sh 'export TAG=$(git log --pretty=format:'%h' -n 1)'
                 sh 'docker login -u carolina01 -p ${DOCKER_PASS}'
-                sh 'docker tag at20_convert_service carolina01/at20_convert_service'
-                sh 'docker push carolina01/at20_convert_service'
+                sh 'docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}'
+                sh 'docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}'
             }
         }
         stage ('DeployToDev') {
             steps {
-                sh 'docker-compose -f docker-compose.dev.czn.yaml up -d'
+                sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose-czn.yaml up -d'
                 sh 'echo command to run smoke test'
             }
         }
         stage('DeployToAuto'){
             steps {
-                sh 'DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d'
+                sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d'
+                sh 'echo command to run automation tests'
             }
         }
     }
     post{
         always {
             sh 'docker container prune -f'
-            sh 'docker rmi $(docker images -f "dangling=true" -q)'
-            sh 'docker system prune -a'
+            sh 'docker image prune -f --filter "dangling=true"'
+            sh 'docker system prune -a -f'
         }
     }
 }
