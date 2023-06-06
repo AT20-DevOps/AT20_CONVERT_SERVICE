@@ -69,7 +69,7 @@ pipeline{
         stage('DeployToAuto'){
             steps {
                 sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d'
-                sh 'scho command to run automation tests'
+                sh 'echo command to run automation tests'
             }
         }
     }
