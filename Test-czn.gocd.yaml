@@ -124,4 +124,4 @@ pipelines:
             - script: |
                 echo deploy here
                 ls -la
-                export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d
+                export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose-czn.yaml up -d
