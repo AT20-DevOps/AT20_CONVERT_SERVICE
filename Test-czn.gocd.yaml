@@ -57,7 +57,11 @@ pipelines:
             tasks:
             - script: |
                 ls -la
-                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.organization=at20-czn -Dsonar.projectKey=at20-czn -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+                    -Dsonar.organization=at20-czn \
+                    -Dsonar.projectKey=at20-czn \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
     - PackageAndPublish:
         fetch_materials: false
         keep_artifacts: false
