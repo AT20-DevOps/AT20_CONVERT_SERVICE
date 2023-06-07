@@ -1,6 +1,6 @@
 format_version: 10
 pipelines:
-  Test-czn:
+  Test:
     group: AT20-czn
     label_template: ${COUNT}
     lock_behavior: none
@@ -43,8 +43,9 @@ pipelines:
             - build:
                 source: Dockerfile
             - build:
-                source: dist/
-                destination: build
+                source: docker-compose.dev.bdcc.yaml
+            - build: 
+                source: .env
     - code_inspection:
         fetch_materials: false
         keep_artifacts: false
@@ -64,8 +65,8 @@ pipelines:
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
-    - packageAndPublish:
-        fetch_materials: false
+    - PackageAndPublish:
+        fetch_materials: true
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -77,15 +78,48 @@ pipelines:
             resources :
             - docker
             tasks:
-            - fetch:
-                pipeline: Test-czn
-                stage: Test
-                job: unit-test
-                source: build
-                destination: dist
             - script: |
                 ls -la
                 docker build -t at20_convert_service .
                 docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
                 docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
                 docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+            artifacts:
+              - build:
+                  source: docker-compose.dev.bdcc.yaml
+              - build: 
+                  source: .env
+  SmokeTest:
+    group: AT20-czn
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    environment_variables:
+      GIT_COMMIT_HASH: 1.2
+    materials:
+      Test:
+        pipeline: Test
+        stage: PackageAndPublish
+    stages:
+    - DeployToDev:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deployToDev:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: docker-compose.dev.bdcc.yaml
+                is_file: true
+                run_if: passed
+            - script: |
+                echo deploy here
