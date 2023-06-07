@@ -76,6 +76,6 @@ pipelines:
             tasks:
             - script: |
                 docker build -t at20_convert_service .
-                docker login -u carolina01 -p ${DOCKER_PASS}
-                docker tag at20_convert_service carolina01:at20_convert_service:${GIT_COMMIT_HASH}
-                docker push carolina01:at20_convert_service:${GIT_COMMIT_HASH}
+                docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
+                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
