@@ -40,8 +40,10 @@ pipelines:
             - build:
                 source: test/report/report.html
                 destination: html_report
+            - build:
+                source: Dockerfile
     - code_inspection:
-        fetch_materials: true
+        fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -51,8 +53,9 @@ pipelines:
           sonar:
             timeout: 0
             tasks:
-            - exec:
-                arguments:
-                - sonar-scanner command here
-                command: echo
-                run_if: passed
+            - script: |
+                sonar-scanner \
+                    -Dsonar.organization=at20-czn \
+                    -Dsonar.projectKey=at20-czn \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
