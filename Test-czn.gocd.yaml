@@ -42,6 +42,9 @@ pipelines:
                 destination: html_report
             - build:
                 source: Dockerfile
+            - build:
+                source: dist/
+                destination: build
     - code_inspection:
         fetch_materials: false
         keep_artifacts: false
@@ -55,6 +58,11 @@ pipelines:
             resources :
             - ubuntu
             tasks:
+            - fetch:
+              stage: Test
+              job: unit-test
+              source: build
+              destination: dist
             - script: |
                 /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
                     -Dsonar.organization=at20-czn \
