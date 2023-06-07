@@ -78,7 +78,6 @@ pipelines:
             - docker
             tasks:
             - fetch:
-                artifact_origin: gocd
                 pipeline: Test-czn
                 stage: Test
                 job: unit-test
