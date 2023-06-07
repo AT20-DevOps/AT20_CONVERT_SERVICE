@@ -59,6 +59,7 @@ pipelines:
             - fetch:
                 is_file: false
                 source: build
+                stage: Test
                 job: unit-test
                 run_if: passed
             - script: |
