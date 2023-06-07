@@ -73,7 +73,7 @@ pipelines:
             - script: |
                 ls -la
                 docker info
-                echo docker build -t at20_convert_service .
-                echo docker login -u carolina01 -p ${DOCKER_PASS}
-                echo docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
-                echo docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker build -t at20_convert_service .
+                docker login -u carolina01 -p ${DOCKER_PASS}
+                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
