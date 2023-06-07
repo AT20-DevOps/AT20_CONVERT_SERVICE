@@ -73,6 +73,12 @@ pipelines:
             timeout: 0
             resources :
             - docker
+            - fetch:
+                is_file: false
+                source: Dockerfile
+                stage: Test
+                job: unit-test
+                run_if: passed
             tasks:
             - script: |
                 docker build -t at20_convert_service .
