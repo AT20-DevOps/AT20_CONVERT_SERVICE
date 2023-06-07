@@ -43,7 +43,7 @@ pipelines:
             - build:
                 source: Dockerfile
             - build:
-                source: docker-compose.dev.bdcc.yaml
+                source: docker-compose-czn.yaml
             - build: 
                 source: .env
     - code_inspection:
@@ -86,7 +86,7 @@ pipelines:
                 docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
             artifacts:
               - build:
-                  source: docker-compose.dev.bdcc.yaml
+                  source: docker-compose-czn.yaml
               - build: 
                   source: .env
   SmokeTest:
@@ -118,7 +118,7 @@ pipelines:
                 pipeline: Test
                 stage: PackageAndPublish
                 job: docker
-                source: docker-compose.dev.bdcc.yaml
+                source: docker-compose-czn.yaml
                 is_file: true
                 run_if: passed
             - script: |
