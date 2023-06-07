@@ -56,7 +56,6 @@ pipelines:
             - ubuntu
             tasks:
             - script: |
-                ls -la
                 /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
                     -Dsonar.organization=at20-czn \
                     -Dsonar.projectKey=at20-czn \
@@ -76,8 +75,6 @@ pipelines:
             - docker
             tasks:
             - script: |
-                ls -la
-                docker info
                 docker build -t at20_convert_service .
                 docker login -u carolina01 -p ${DOCKER_PASS}
                 docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
