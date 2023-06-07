@@ -64,7 +64,7 @@ pipelines:
             - script: |
               ls -la
               echo sonar-scanner \
-                  -Dsonar.organization=at20-converter \
-                  -Dsonar.projectKey=at20-converter \
-                  -Dsonar.sources=. \
-                  -Dsonar.host.url=https://sonarcloud.io
+                    -Dsonar.organization=at20-converter \
+                    -Dsonar.projectKey=at20-converter \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
