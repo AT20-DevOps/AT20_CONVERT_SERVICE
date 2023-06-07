@@ -16,7 +16,7 @@ pipelines:
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task-11-czn
+        branch: task12-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
