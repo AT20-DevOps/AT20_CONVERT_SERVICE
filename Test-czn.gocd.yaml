@@ -61,7 +61,7 @@ pipelines:
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
-    - package:
+    - packageAndPublish:
         fetch_materials: true
         keep_artifacts: false
         clean_workspace: false
@@ -75,5 +75,7 @@ pipelines:
             - docker
             tasks:
             - script: |
-                docker help
-                ls -la
+                docker build -t at20_convert_service .
+                docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
+                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
