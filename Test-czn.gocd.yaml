@@ -5,13 +5,18 @@ pipelines:
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
+    environment_variables:
+      GIT_COMMIT_HASH: 1.2
+    secure_variables:
+      SONAR_TOKEN: AES:jBS5s9YWkE5zshtYA+za6A==:LBjKeAThwwf9xZAPBVMwmmW6UbaI8mHluXWxEEWEQaUW/bV+MqBPGo2Lcs2VJXlM
+      DOCKER_PASS: AES:9iJXyHiv1e+AK3eDD0h9Pw==:EWoP0YfngEtsXgMUuyVe4A==
     materials:
       git-dbfb6af:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task10-czn
+        branch: task-11-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
@@ -35,8 +40,10 @@ pipelines:
             - build:
                 source: test/report/report.html
                 destination: html_report
+            - build:
+                source: Dockerfile
     - code_inspection:
-        fetch_materials: true
+        fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -45,9 +52,30 @@ pipelines:
         jobs:
           sonar:
             timeout: 0
+            resources :
+            - ubuntu
             tasks:
-            - exec:
-                arguments:
-                - sonar-scanner command here
-                command: echo
-                run_if: passed
+            - script: |
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+                    -Dsonar.organization=at20-czn \
+                    -Dsonar.projectKey=at20-czn \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
+    - packageAndPublish:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          docker:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - script: |
+                docker build -t at20_convert_service .
+                docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
+                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
