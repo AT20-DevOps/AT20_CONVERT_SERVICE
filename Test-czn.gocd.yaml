@@ -5,11 +5,11 @@ pipelines:
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
-    environment-variables:
+    environment_variables:
       GIT_COMMIT_HASH: 1.2
-    secure-variables:
+    secure_variables:
       SONAR_TOKEN: AES:jBS5s9YWkE5zshtYA+za6A==:LBjKeAThwwf9xZAPBVMwmmW6UbaI8mHluXWxEEWEQaUW/bV+MqBPGo2Lcs2VJXlM
-      DOCKER_PASS: AES:HIZ3d5pfAxY+m3KEr8w9+w==:qbNhFB6O+A2fHrzMbPf5bA==
+      DOCKER_PASS: AES:9iJXyHiv1e+AK3eDD0h9Pw==:EWoP0YfngEtsXgMUuyVe4A==
     materials:
       git-dbfb6af:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
@@ -57,6 +57,11 @@ pipelines:
             tasks:
             - script: |
                 ls -la
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+                    -Dsonar.organization=at20-czn \
+                    -Dsonar.projectKey=at20-czn \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
     - PackageAndPublish:
         fetch_materials: false
         keep_artifacts: false
