@@ -52,6 +52,8 @@ pipelines:
         jobs:
           sonar:
             timeout: 0
+            resources :
+            - ubuntu
             tasks:
             - script: |
                 sonar-scanner \
