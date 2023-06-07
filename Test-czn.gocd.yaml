@@ -60,4 +60,4 @@ pipelines:
                 run_if: passed
             - script: |
                 ls -la
-                echo sonar-scanner -Dsonar.organization=at20-converter -Dsonar.projectKey=at20-converter -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.organization=at20-converter -Dsonar.projectKey=at20-converter -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
