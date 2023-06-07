@@ -61,3 +61,18 @@ pipelines:
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
+    - package:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          docker:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - script: |
+                docker help
