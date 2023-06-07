@@ -5,6 +5,11 @@ pipelines:
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
+    environment_variables:
+      GIT_COMMIT_HASH: 1.2
+    secure_variables:
+      SONAR_TOKEN: AES:jBS5s9YWkE5zshtYA+za6A==:LBjKeAThwwf9xZAPBVMwmmW6UbaI8mHluXWxEEWEQaUW/bV+MqBPGo2Lcs2VJXlM
+      DOCKER_PASS: AES:9iJXyHiv1e+AK3eDD0h9Pw==:EWoP0YfngEtsXgMUuyVe4A==
     materials:
       git-dbfb6af:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
