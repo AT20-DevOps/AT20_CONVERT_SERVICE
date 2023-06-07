@@ -62,5 +62,5 @@ pipelines:
                 job: unit-test
                 run_if: passed
             - script: |
-              ls -la
-              echo sonar-scanner -Dsonar.organization=at20-converter -Dsonar.projectKey=at20-converter -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+                ls -la
+                echo sonar-scanner -Dsonar.organization=at20-converter -Dsonar.projectKey=at20-converter -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
