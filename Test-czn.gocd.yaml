@@ -76,3 +76,4 @@ pipelines:
             tasks:
             - script: |
                 docker help
+                ls -la
