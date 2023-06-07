@@ -58,11 +58,6 @@ pipelines:
             resources :
             - ubuntu
             tasks:
-            - fetch:
-              stage: Test
-              job: unit-test
-              source: build
-              destination: dist
             - script: |
                 /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
                     -Dsonar.organization=at20-czn \
@@ -70,7 +65,7 @@ pipelines:
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
     - packageAndPublish:
-        fetch_materials: true
+        fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -82,7 +77,15 @@ pipelines:
             resources :
             - docker
             tasks:
+            - fetch:
+              artifact_origin: gocd
+              pipeline: Test-czn
+              stage: Test
+              job: unit-test
+              source: build
+              destination: dist
             - script: |
+                ls -la
                 docker build -t at20_convert_service .
                 docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
                 docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
