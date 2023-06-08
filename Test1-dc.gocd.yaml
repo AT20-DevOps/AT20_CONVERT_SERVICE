@@ -5,13 +5,18 @@ pipelines:
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
+    environment_variables:
+      GIT_COMMIT_HASH: 1.2
+    secure_variables:
+      SONAR_TOKEN: AES:00iT9Y9WE01ib5E6v22BNg==:MnQZwXtWPkyM42QbIpZlL1BPlVXEzhzNTTqvu9Dr0XrMn529qgMj4Yq5cb+dTRrK
+      DOCKER_PASS: AES:ijx5mmkqGQ57G743cvpZbg==:zUbMyS91grlIM3JJm9bEag==
     materials:
       git-3bef966:
         git: https://github.com/AT20-DevOps/AT20_CONVERT_SERVICE.git
         username: daniish77
         shallow_clone: false
         auto_update: true
-        branch: task10-dc
+        branch: task11-dc
         encrypted_password: AES:L0A67qe/6sGlax8rPQJcJQ==:WGhnuvjwdkNCIcjOUtJ+XA==
     stages:
     - Test:
@@ -29,13 +34,16 @@ pipelines:
             tasks:
             - script : |
                 npm install
+                npm i --save-dev @types/jest
                 npm run test
             artifacts :
             - build:
                 source: test/report/report.html
                 destination: html_report
+            - build:
+                source: Dockerfile
     - code-inspection:
-        fetch_materials: true
+        fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -44,9 +52,35 @@ pipelines:
         jobs:
           sonar:
             timeout: 0
+            resources :
+            - ubuntu
             tasks:
-            - exec:
-                arguments:
-                - sonar-scanner command
-                command: echo
-                run_if: passed
+            - script: |
+                ls -la
+                /godata/.sonar/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+                    -Dsonar.organization=at20-dc \
+                    -Dsonar.projectKey=convert-service-dc \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io
+    - PackageandPublish:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          docker:
+            timeout: 0
+            resources:
+            - docker
+            tasks:
+            - script: |
+                docker build -t at20_convert_service .
+                docker login -u daniish77 -p ${DOCKER_PASS}
+                docker tag at20_convert_service daniish77/at20_convert_service:${GIT_COMMIT_HASH}
+                docker push daniish77/at20_convert_service:${GIT_COMMIT_HASH}
+
+
+
+
