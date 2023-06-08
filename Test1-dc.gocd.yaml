@@ -89,7 +89,7 @@ pipelines:
                   source: docker-compose.dc.yaml
               - build:
                   source: .env
-  SmokeTest:
+  Deploy:
     group: AT20group
     label_template: ${COUNT}
     lock_behavior: none
