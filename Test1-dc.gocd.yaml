@@ -115,7 +115,7 @@ pipelines:
                 - docker
               tasks:
                 - fetch:
-                    pipeline: Test
+                    pipeline: Test1
                     stage: PackageandPublish
                     job: docker
                     source: docker-compose.dc.yaml
