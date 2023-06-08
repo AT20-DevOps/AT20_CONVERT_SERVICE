@@ -112,31 +112,31 @@ pipelines:
             deployToDev:
               timeout: 0
               resources:
-                - docker
+              - docker
               tasks:
-                - fetch:
-                    pipeline: Test1
-                    stage: PackageandPublish
-                    job: docker
-                    source: docker-compose.dc.yaml
-                    is_file: true
-                    run_if: passed
-                - script: |
-                    echo deploy here
-                    ls -la
-                    export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose.dc.yaml up -d
-      - Smoke:
-          fetch_materials: false
-          keep_artifacts: false
-          clean_workspace: false
-          approval:
-            type: success
-            allow_only_on_success: false
-          jobs:
-            deployToDev:
-              timeout: 0
-              resources:
-                - docker
-              tasks:
-                - script: |
-                    echo command to run smoke test
+              - fetch:
+                  pipeline: Test1
+                  stage: PackageandPublish
+                  job: docker
+                  source: docker-compose.dc.yaml
+                  is_file: true
+                  run_if: passed
+              - script: |
+                  echo deploy here
+                  ls -la
+                  export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose.dc.yaml up -d
+    - Smoke:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          test:
+            timeout: 0
+            resources:
+            - docker
+            tasks:
+            - script: |
+                echo command to run smoke test
