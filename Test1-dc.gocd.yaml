@@ -47,7 +47,7 @@ pipelines:
             - build:
                 source: .env
     - code-inspection:
-        fetch_materials: false
+        fetch_materials: true
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -101,45 +101,42 @@ pipelines:
         pipeline: Test
         stage: PackageandPublish
     stages:
-    - DeployToDev:
-        fetch_materials: false
-        keep_artifacts: false
-        clean_workspace: false
-        approval:
-          type: success
-          allow_only_on_success: false
-        jobs:
-          deployToDev:
-            timeout: 0
-            resources :
-            - docker
-            tasks:
-            - fetch:
-                pipeline: Test
-                stage: PackageandPublish
-                job: docker
-                source: docker-compose.dc.yaml
-                is_file: true
-                run_if: passed
-            - script: |
-                echo deploy here
-                ls -la
-                export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose.dc.yaml up -d
-    - Smoke:
-        fetch_materials: false
-        keep_artifacts: false
-        clean_workspace: false
-        approval:
-          type: success
-          allow_only_on_success: false
-        jobs:
-          deployToDev:
-            timeout: 0
-            resources :
-            - docker
-            tasks:
-            - script: |
-                echo command to run smoke test
-
-
-
+      - DeployToDev:
+          fetch_materials: false
+          keep_artifacts: false
+          clean_workspace: false
+          approval:
+            type: success
+            allow_only_on_success: false
+          jobs:
+            deployToDev:
+              timeout: 0
+              resources:
+                - docker
+              tasks:
+                - fetch:
+                    pipeline: Test
+                    stage: PackageandPublish
+                    job: docker
+                    source: docker-compose.dc.yaml
+                    is_file: true
+                    run_if: passed
+                - script: |
+                    echo deploy here
+                    ls -la
+                    export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose.dc.yaml up -d
+      - Smoke:
+          fetch_materials: false
+          keep_artifacts: false
+          clean_workspace: false
+          approval:
+            type: success
+            allow_only_on_success: false
+          jobs:
+            deployToDev:
+              timeout: 0
+              resources:
+                - docker
+              tasks:
+                - script: |
+                    echo command to run smoke test
