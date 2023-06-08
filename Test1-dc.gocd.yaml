@@ -97,8 +97,8 @@ pipelines:
     environment_variables:
       GIT_COMMIT_HASH: 1.2
     materials:
-      Test:
-        pipeline: Test
+      Test1:
+        pipeline: Test1
         stage: PackageandPublish
     stages:
       - DeployToDev:
