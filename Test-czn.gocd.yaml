@@ -1,6 +1,6 @@
 format_version: 10
 pipelines:
-  Test-czn:
+  Test:
     group: AT20-czn
     label_template: ${COUNT}
     lock_behavior: none
@@ -16,7 +16,7 @@ pipelines:
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task-11-czn
+        branch: task12-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
@@ -42,6 +42,10 @@ pipelines:
                 destination: html_report
             - build:
                 source: Dockerfile
+            - build:
+                source: docker-compose-czn.yaml
+            - build: 
+                source: .env
     - code_inspection:
         fetch_materials: false
         keep_artifacts: false
@@ -61,7 +65,7 @@ pipelines:
                     -Dsonar.projectKey=at20-czn \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
-    - packageAndPublish:
+    - PackageAndPublish:
         fetch_materials: true
         keep_artifacts: false
         clean_workspace: false
@@ -75,7 +79,64 @@ pipelines:
             - docker
             tasks:
             - script: |
+                ls -la
                 docker build -t at20_convert_service .
                 docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
                 docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
                 docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+            artifacts:
+              - build:
+                  source: docker-compose-czn.yaml
+              - build: 
+                  source: .env
+  SmokeTest:
+    group: AT20-czn
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    environment_variables:
+      GIT_COMMIT_HASH: 1.2
+    materials:
+      Test:
+        pipeline: Test
+        stage: PackageAndPublish
+    stages:
+    - DeployToDev:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deployToDev:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: docker-compose-czn.yaml
+                is_file: true
+                run_if: passed
+            - script: |
+                echo deploy here
+                ls -la
+                export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose-czn.yaml up -d
+    - Smoke:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deployToDev:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - script: |
+                echo command to run smoke test
