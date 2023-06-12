@@ -41,6 +41,7 @@ pipeline{
             }
         }
         stage('Quality gate'){
+            when { expression { params.skip_stage != true } }
             steps{
                 timeout(time: 3, unit: 'MINUTES') {
                     script{
@@ -82,8 +83,7 @@ pipeline{
     }
     post{
         always{
-            sh 'docker image prune -f --filter "dangling=true"'
-            sh 'docker system prune -a'
+            sh 'docker image prune -a -f'
         }
     }
 }
