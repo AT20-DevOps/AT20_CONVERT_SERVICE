@@ -7,7 +7,7 @@ pipeline{
     environment {
         DOCKER_PASS = credentials('docker_pass')
         SONAR_TOKEN = credentials('sonar_token')
-        TARGET_HOST = '192.168.56.62'
+        TARGET_HOST = '192.168.0.173'
         GIT_COMMIT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
         //GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
     }
@@ -74,7 +74,7 @@ pipeline{
             }
         }
         stage('DeployToAuto') {
-            when { expression { params.skip_stage != true } }
+            when { expression { params.skip_stage != false } }
             steps {
                 sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose.dc.yaml up -d'
                 sh 'echo command to run automation tests'
