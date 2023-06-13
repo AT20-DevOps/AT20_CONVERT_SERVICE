@@ -157,7 +157,7 @@ pipelines:
       Test:
         pipeline: Test
         stage: PackageAndPublish
-      Test:
+      Acceptance:
         pipeline: Acceptance
         stage: DeployToDev
     stages:
