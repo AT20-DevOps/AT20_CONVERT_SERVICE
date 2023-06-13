@@ -104,7 +104,6 @@ pipelines:
     lock_behavior: none
     display_order: -1
     environment_variables:
-      GIT_COMMIT_HASH: 1.2
       TARGET_HOST: 192.168.0.18
     materials:
       Test:
@@ -147,3 +146,33 @@ pipelines:
                 run_if: passed
             - script: |
                 export TAG_VERSION=$(cat gitCommit.txt) && docker-compose -f docker-compose-czn.yaml up -d
+  Capacity:
+    group: AT20-czn
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    environment_variables:
+      TARGET_HOST: 192.168.0.18
+    materials:
+      Test:
+        pipeline: Test
+        stage: PackageAndPublish
+      Test:
+        pipeline: Acceptance
+        stage: DeployToDev
+    stages:
+    - DeployToAuto:
+        fetch_materials: false
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          capacity-test:
+            timeout: 0
+            resources :
+            - docker
+            tasks:
+            - script: |
+                export TAG_VERSION=$(cat gitCommit.txt) && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d
