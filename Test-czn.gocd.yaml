@@ -157,9 +157,6 @@ pipelines:
       Test:
         pipeline: Test
         stage: PackageAndPublish
-      Acceptance:
-        pipeline: Acceptance
-        stage: DeployToDev
     stages:
     - DeployToAuto:
         fetch_materials: false
@@ -174,5 +171,26 @@ pipelines:
             resources :
             - docker
             tasks:
+            - fetch:
+                pipeline: Test
+                stage: Test
+                job: unit-test
+                source: gitCommit.txt
+                is_file: true
+                run_if: passed
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: docker-compose-czn.yaml
+                is_file: true
+                run_if: passed
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: .env
+                is_file: true
+                run_if: passed
             - script: |
                 export TAG_VERSION=$(cat gitCommit.txt) && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d
