@@ -88,12 +88,12 @@ pipeline{
         success {
         emailext body: 'El pipeline se ejecutó exitosamente',
                  subject: 'Pipeline exitoso',
-                 to: 'correo@example.com'
+                 to: 'daniish77@gmail.com'
         }
         failure {
         emailext body: 'El pipeline falló',
                  subject: 'Pipeline fallido',
-                 to: 'correo@example.com'
+                 to: 'daniish77@gmail.com'
         }
     }
 
