@@ -34,7 +34,6 @@ pipelines:
             tasks:
             - script: |
                 git rev-parse --short HEAD > gitCommit.txt
-                export GIT_COMMIT_HASH=$(cat gitCommit.txt)
                 npm install --save-dev ts-jest
                 npm install --save-dev @types/jest
                 npx jest
