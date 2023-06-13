@@ -1,9 +1,5 @@
 pipeline{
     agent any
-    parameters{
-        booleanParam(name: 'skip_stage', defaultValue: true, description: 'Set to true to skip stage')
-
-    }
     environment {
         DOCKER_PASS = credentials('docker_pass')
         SONAR_TOKEN = credentials('sonar_token')
@@ -25,7 +21,6 @@ pipeline{
             }
         }
         stage('CodeInspection'){
-            when { expression { params.skip_stage != true } }
             agent{
                 docker 'sonarsource/sonar-scanner-cli'
             }
@@ -40,7 +35,6 @@ pipeline{
             }
         }
         stage('Quality gate'){
-            when { expression { params.skip_stage != true } }
             steps{
                 timeout(time: 3, unit: 'MINUTES') {
                     script{
@@ -72,7 +66,6 @@ pipeline{
             }
         }
         stage('DeployToAuto') {
-            when { expression { params.skip_stage != false } }
             steps {
                 sh 'export TAG_VERSION=${GIT_COMMIT_HASH} && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose.dc.yaml up -d'
                 sh 'echo command to run automation tests'
@@ -85,13 +78,13 @@ pipeline{
         }
         success {
         emailext body: 'The Convert service build was executed successfully',
-                 subject: 'The results of the build for the "Converter service"',
+                 subject: 'Success results for the "Converter service"',
                  to: 'daniish77@gmail.com',
                  attachLog: true
         }
         failure {
-        emailext body: 'The Convert service build failed at stage: ${currentBuild.currentStage.name}\n\n',
-                 subject: 'The results of the build for the "Converter service"',
+        emailext body: 'The Convert service build was failed',
+                 subject: 'Failed results for the "Converter service"',
                  to: 'daniish77@gmail.com',
                  attachLog: true
         }
