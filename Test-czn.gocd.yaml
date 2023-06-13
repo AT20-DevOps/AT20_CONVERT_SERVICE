@@ -89,11 +89,10 @@ pipelines:
                 job: unit-test
                 run_if: passed
             - script: |
-                export GIT_COMMIT_HASH=$(cat gitCommit.txt)
                 docker build -t at20_convert_service .
                 docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
-                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
-                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker tag at20_convert_service carolina01/at20_convert_service:$(cat gitCommit.txt)
+                docker push carolina01/at20_convert_service:$(cat gitCommit.txt)
             artifacts:
               - build:
                   source: docker-compose-czn.yaml
@@ -147,5 +146,4 @@ pipelines:
                 is_file: true
                 run_if: passed
             - script: |
-                export GIT_COMMIT_HASH=$(cat gitCommit.txt)
-                export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose-czn.yaml up -d
+                export TAG_VERSION=$(cat gitCommit.txt) && docker-compose -f docker-compose-czn.yaml up -d
