@@ -3,7 +3,7 @@ pipeline{
     environment {
         DOCKER_PASS = credentials('docker_pass')
         SONAR_TOKEN = credentials('sonar_token')
-        TARGET_HOST = '192.168.0.173'
+        TARGET_HOST = '192.168.0.151'
         GIT_COMMIT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
     }
     stages {
