@@ -75,18 +75,12 @@ pipeline{
     post{
         always{
             sh 'docker image prune -a -f'
-        }
-        success {
-        emailext body: 'The Convert service build was executed successfully',
-                 subject: 'Success results for the "Converter service"',
-                 to: 'daniish77@gmail.com',
-                 attachLog: true
-        }
-        failure {
-        emailext body: 'The Convert service build was failed',
-                 subject: 'Failed results for the "Converter service"',
-                 to: 'daniish77@gmail.com',
-                 attachLog: true
+            emailext (
+                    body: 'Pipeline for ${JOB_NAME} on build ${BUILD_NUMBER} has been executed ${BUILD_STATUS}, for details go to ${BUILD_URL}',
+                    subject: 'COnverter service build was executed ${BUILD_STATUS}',
+                    to: 'daniish77@gmail.com',
+                    attachLog: true
+            )
         }
     }
 
