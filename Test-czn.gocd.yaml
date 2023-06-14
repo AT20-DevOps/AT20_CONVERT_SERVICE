@@ -153,9 +153,9 @@ pipelines:
     environment_variables:
       TARGET_HOST: 192.168.0.18
     materials:
-      Test:
-        pipeline: Test
-        stage: PackageAndPublish
+      Acceptance:
+        pipeline: Acceptance
+        stage: DeployToDev
     stages:
     - DeployToAuto:
         fetch_materials: false
@@ -171,23 +171,23 @@ pipelines:
             - docker
             tasks:
             - fetch:
-                pipeline: Test
-                stage: Test
-                job: unit-test
+                pipeline: Acceptance
+                stage: DeployToDev
+                job: smoke-test
                 source: gitCommit.txt
                 is_file: true
                 run_if: passed
             - fetch: 
-                pipeline: Test
-                stage: PackageAndPublish
-                job: docker
+                pipeline: Acceptance
+                stage: DeployToDev
+                job: smoke-test
                 source: docker-compose-czn.yaml
                 is_file: true
                 run_if: passed
             - fetch: 
-                pipeline: Test
-                stage: PackageAndPublish
-                job: docker
+                pipeline: Acceptance
+                stage: DeployToDev
+                job: smoke-test
                 source: .env
                 is_file: true
                 run_if: passed
