@@ -152,7 +152,6 @@ pipelines:
                 source: .env
             - build:
                 source: gitCommit.txt
-    - code_inspection:
   Capacity:
     group: AT20-czn
     label_template: ${COUNT}
