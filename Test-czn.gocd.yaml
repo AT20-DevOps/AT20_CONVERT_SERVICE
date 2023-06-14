@@ -145,13 +145,13 @@ pipelines:
                 run_if: passed
             - script: |
                 export TAG_VERSION=$(cat gitCommit.txt) && docker-compose -f docker-compose-czn.yaml up -d
-          artifacts:
-            - build:
-                source: docker-compose-czn.yaml
-            - build: 
-                source: .env
-            - build:
-                source: gitCommit.txt
+            artifacts:
+              - build:
+                  source: docker-compose-czn.yaml
+              - build: 
+                  source: .env
+              - build:
+                  source: gitCommit.txt
   Capacity:
     group: AT20-czn
     label_template: ${COUNT}
