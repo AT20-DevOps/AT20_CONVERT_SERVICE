@@ -16,7 +16,7 @@ pipelines:
         username: carolinazegarra01
         shallow_clone: false
         auto_update: true
-        branch: task12-czn
+        branch: task14-czn
         encrypted_password: AES:YglD8hhgJFuJMXQUwtXSVw==:gCQ0ar8k+rZ8llR0tOdQHA==
     stages:
     - Test:
@@ -33,6 +33,7 @@ pipelines:
             - ubuntu
             tasks:
             - script: |
+                git rev-parse --short HEAD > gitCommit.txt
                 npm install --save-dev ts-jest
                 npm install --save-dev @types/jest
                 npx jest
@@ -46,6 +47,8 @@ pipelines:
                 source: docker-compose-czn.yaml
             - build: 
                 source: .env
+            - build:
+                source: gitCommit.txt
     - code_inspection:
         fetch_materials: false
         keep_artifacts: false
@@ -66,7 +69,7 @@ pipelines:
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io
     - PackageAndPublish:
-        fetch_materials: true
+        fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
         approval:
@@ -78,24 +81,29 @@ pipelines:
             resources :
             - docker
             tasks:
+            - fetch:
+                is_file: false
+                source: ./
+                stage: Test
+                job: unit-test
+                run_if: passed
             - script: |
-                ls -la
                 docker build -t at20_convert_service .
                 docker login -u carolina01 --password-stdin <<< ${DOCKER_PASS}
-                docker tag at20_convert_service carolina01/at20_convert_service:${GIT_COMMIT_HASH}
-                docker push carolina01/at20_convert_service:${GIT_COMMIT_HASH}
+                docker tag at20_convert_service carolina01/at20_convert_service:$(cat gitCommit.txt)
+                docker push carolina01/at20_convert_service:$(cat gitCommit.txt)
             artifacts:
               - build:
                   source: docker-compose-czn.yaml
               - build: 
                   source: .env
-  SmokeTest:
+  Acceptance:
     group: AT20-czn
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
     environment_variables:
-      GIT_COMMIT_HASH: 1.2
+      TARGET_HOST: 192.168.0.18
     materials:
       Test:
         pipeline: Test
@@ -109,11 +117,18 @@ pipelines:
           type: success
           allow_only_on_success: false
         jobs:
-          deployToDev:
+          smoke-test:
             timeout: 0
             resources :
             - docker
             tasks:
+            - fetch:
+                pipeline: Test
+                stage: Test
+                job: unit-test
+                source: gitCommit.txt
+                is_file: true
+                run_if: passed
             - fetch: 
                 pipeline: Test
                 stage: PackageAndPublish
@@ -121,11 +136,28 @@ pipelines:
                 source: docker-compose-czn.yaml
                 is_file: true
                 run_if: passed
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: .env
+                is_file: true
+                run_if: passed
             - script: |
-                echo deploy here
-                ls -la
-                export TAG_VERSION=${GIT_COMMIT_HASH} && docker-compose -f docker-compose-czn.yaml up -d
-    - Smoke:
+                export TAG_VERSION=$(cat gitCommit.txt) && docker-compose -f docker-compose-czn.yaml up -d
+  Capacity:
+    group: AT20-czn
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    environment_variables:
+      TARGET_HOST: 192.168.0.18
+    materials:
+      Test:
+        pipeline: Test
+        stage: PackageAndPublish
+    stages:
+    - DeployToAuto:
         fetch_materials: false
         keep_artifacts: false
         clean_workspace: false
@@ -133,10 +165,31 @@ pipelines:
           type: success
           allow_only_on_success: false
         jobs:
-          deployToDev:
+          capacity-test:
             timeout: 0
             resources :
             - docker
             tasks:
+            - fetch:
+                pipeline: Test
+                stage: Test
+                job: unit-test
+                source: gitCommit.txt
+                is_file: true
+                run_if: passed
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: docker-compose-czn.yaml
+                is_file: true
+                run_if: passed
+            - fetch: 
+                pipeline: Test
+                stage: PackageAndPublish
+                job: docker
+                source: .env
+                is_file: true
+                run_if: passed
             - script: |
-                echo command to run smoke test
+                export TAG_VERSION=$(cat gitCommit.txt) && DOCKER_HOST=ssh://$TARGET_HOST docker-compose -f docker-compose-czn.yaml up -d
